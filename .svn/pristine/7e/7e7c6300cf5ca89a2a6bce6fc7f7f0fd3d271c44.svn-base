@@ -1,0 +1,28 @@
+package com.spring.dao.impl;
+
+import java.util.List;
+
+import com.spring.dao.entity.CustomerAccountInfo;
+import com.spring.dao.entity.CustomerTransactionHistory;
+import com.spring.dao.entity.PayeeInfo;
+import com.spring.model.CustomerForm;
+import com.spring.model.MiniStatementVO;
+import com.spring.model.UserSessionVO;
+
+public interface CustomerDao {
+	public String persistCustomer(CustomerForm customer);
+	public List<CustomerForm> findCustomers();
+	public UserSessionVO validateCustomer(String userid, String password);
+	public UserSessionVO validateCustomerByUserId(String userid);
+	public boolean deleteCustomer(int id);
+	public CustomerForm getCustomer(int id);
+	public CustomerForm getCustomer(String userid);
+	public String updateCustomer(CustomerForm customer);
+	public List<CustomerAccountInfo> getAccountDetails(String userid);
+	public List<CustomerAccountInfo> getAccount(String accountNum);
+	public List<MiniStatementVO> getTransactionDetails(String userid);
+	public String addPayee(PayeeInfo payee);
+	public List<PayeeInfo> getPayeeList(String userid);
+	public String persistCustomerTransaction(CustomerTransactionHistory transaction);
+}
+

@@ -1,0 +1,112 @@
+<%@page import="com.spring.dao.entity.PayeeInfo"%>
+<%@page import="java.util.List"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Corporate by Free CSS Templates</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="<%=request.getContextPath() %>/css/desibank.css"
+	rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath() %>/css/style.css"
+	rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<jsp:include page="customerHeader.jsp" />
+
+
+<div id="content">
+
+<div id="right" style="width: 100%; height: 433">&nbsp;
+<b> Funds Transfer- Other DesiBank Account across India</b> 
+<hr />
+
+<b> Add Payee - Confirmation Page</b>
+
+<!-- form method="post" action="confirmDetails.htm" -->
+<form method="post" action="transferMoney.htm">
+	<table border="0" align="center">
+
+      <tr>	
+		<td align="left"><b> Register a New Payee</b> </td>
+	  </tr>
+      <tr>	
+		<td align="left"> To register a payee,Please add a Payee and then confirm</td></td>
+	  </tr>
+	   <tr>	
+		<td align="left">
+			<br/>
+			<input type="button" value="Add Payee"/>
+		</td>
+	  </tr>
+	   <tr>	
+		<td align="left"> Payee Registraion alert to be sent on Mobile no </td>
+	  </tr>
+	  
+	  <tr>
+	    	
+		<td align="left">
+		<br/>
+		<input type="button" value="Confirm Payee"/> 
+		</td>
+	  </tr>
+	   
+	   <tr>	
+		<td align="left"><b> Select a Payee to Make a Payment</b> </td>
+	  </tr>
+      <tr>	
+		<td align="left">
+		<%
+		 List<PayeeInfo> payeeList=(List<PayeeInfo>)request.getAttribute("payeeList");
+		
+		%>
+	    <select name="selectedPayeeName">
+				   <option value="NONE" label="--- Select Payee ---"/>
+		           <%
+		           for(PayeeInfo item : payeeList){
+		        	   String dname=item.getPayeeAccountNo()+"-"+item.getPayeeName();
+				   %>
+		        	<option value=<%=item.getPayeeAccountNo()%>><%=dname%></option>
+				  <% } %>
+		
+		</select>
+	  </td>
+	  </tr>
+	  <tr>
+	   <td>
+	   <br />
+	   <br />
+	   
+	   <input type="submit" value="Make a Payment"/>
+	   </td>
+	  </tr>
+	</table>
+</form>
+
+</div>
+
+</div>
+
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+
+
+<div id="footer">
+<p>Copyright © 2006 Sitename.com. Designed by <a
+	href="http://www.freecsstemplates.org" class="link1">Free CSS
+Templates</a> | Downloaded from <a href="http://www.cssbank.com/"><strong>Free
+CSS Resource Bank</strong></a></p>
+</div>
+</body>
+</html>

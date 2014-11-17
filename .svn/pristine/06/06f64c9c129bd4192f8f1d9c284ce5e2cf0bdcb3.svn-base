@@ -1,0 +1,132 @@
+<%@page import="com.spring.model.UserSessionVO"%>
+<%@page import="java.util.List"%>
+<%@page import="com.spring.model.CustomerForm"%>
+<%@page import="com.spring.dao.entity.PayeeInfo" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Corporate by Free CSS Templates</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="<%=request.getContextPath() %>/css/desibank.css"
+	rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath() %>/css/style.css"
+	rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<jsp:include page="customerHeader.jsp" />
+
+
+<div id="content">
+
+<div id="right" style="width: 100%; height: 433">&nbsp;
+<b> Funds Transfer- Other DesiBank Account across India</b> 
+<hr />
+
+<b> Add Payee - Confirmation Page</b>
+
+<!-- form method="post" action="confirmDetails.htm" -->
+<form method="post" action="transactionMoney.htm">
+	<table border="0" align="center">
+	
+	 <%
+	     CustomerForm customerAccountNameVO=(CustomerForm)request.getAttribute("customerForm"); 
+	    String fromCustomerAccount=customerAccountNameVO.getAccountNum()+"(INR)-"+customerAccountNameVO.getName();
+	    List<PayeeInfo> list=(List<PayeeInfo>)request.getAttribute("payeeList");
+	    String selectedPayeeName=(String)request.getAttribute("selectedPayeeName");
+	 
+	 %>
+
+      <tr>	
+		<td align="left"> From Desi-Bank Account : </td>
+		<td align="left"><input type="text" name="fromAccountNumber" size="50"  readonly="readonly" value=<%=fromCustomerAccount%>>
+		                 </input> 
+		 </td>
+	  </tr>
+      <tr>	
+		<td align="left"> To Select Payee : </td>
+		<td align="left">
+		
+		
+		<select name="selectedPayee">
+		<%
+		  for(PayeeInfo payee:list){
+			  String dname=payee.getPayeeAccountNo()+"-"+payee.getPayeeName(); 
+		%>	  
+		 <option value="NONE">--------------Select Payee-------</option>
+		  <option value=<%=payee.getPayeeAccountNo()%> <%=(payee.getPayeeAccountNo()).equals(selectedPayeeName)?"selected":""%>><%=dname%></option>
+		  
+		  <% }
+		%>
+		
+		</select></td>
+	  </tr>
+	  
+	   <tr>	
+		<td align="left"> Transaction Amount(Rs) </td>
+		<td align="left"> <input type="text" name="transactionAmount"/> </td>
+	  </tr>
+	   <tr>	
+		<td align="left"> Transaction Remarks </td>
+		<td align="left"><input type="text" name="transactionRemarks"/></td>
+	  </tr>
+	  
+	   <tr>	
+		<td align="left"> </td>
+		<td align="right">
+           <table border="1">
+             <tr>
+              <td></td>
+              <td>
+              <input name="optionType" type="radio" id="optionType" style="text1" size="30" value="PayNow"/>
+		    <strong>Pay Now  
+		      <br/>
+		    <input name="optionType" type="radio" id="optionType" style="text1" size="30" value="ScheduleForLater"/>
+		      Schedule for later
+		    </strong>
+		    </td>
+             </tr>
+           
+           </table>		
+		
+		</td>
+	  </tr>
+	  
+	  <tr>
+	   <td>
+	   <br />
+	   <br />
+	   
+	   <input type="submit" value="Transfer Money"/>
+	   </td>
+	  </tr>
+	</table>
+</form>
+
+</div>
+
+</div>
+
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+
+
+<div id="footer">
+<p>Copyright © 2006 Sitename.com. Designed by <a
+	href="http://www.freecsstemplates.org" class="link1">Free CSS
+Templates</a> | Downloaded from <a href="http://www.cssbank.com/"><strong>Free
+CSS Resource Bank</strong></a></p>
+</div>
+</body>
+</html>
