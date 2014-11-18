@@ -275,8 +275,7 @@ public class CustomerDaoImpl extends HibernateDaoSupport implements CustomerDao 
 	@Override
 	public List<SecurityQuestions> securityQns() {
 		@SuppressWarnings("unchecked")
-		List<SecurityQuestions> securityQuestions = (List<SecurityQuestions>)getHibernateTemplate().find(
-				"from SecurityQuestions sq where sq.qid < 6");
+		List<SecurityQuestions> securityQuestions = (List<SecurityQuestions>)getHibernateTemplate().find("from SecurityQuestions sq where sq.qid < 6");
 		
 		return securityQuestions;
 
@@ -285,33 +284,9 @@ public class CustomerDaoImpl extends HibernateDaoSupport implements CustomerDao 
 	@Override
 	public List<SecurityQuestions> securityQns2() {
 		@SuppressWarnings("unchecked")
-		List<SecurityQuestions> securityQuestions = (List<SecurityQuestions>)getHibernateTemplate().find(
-				"from SecurityQuestions sq where sq.qid > 5");
+		List<SecurityQuestions> securityQuestions = (List<SecurityQuestions>)getHibernateTemplate().find("from SecurityQuestions sq where sq.qid > 5");
 		
 		return securityQuestions;
 
-	}
-	
-	@Override
-	public CustomerForm getCustomerDetail(String userid){
-		List<Customer> detail = (List<Customer>)getHibernateTemplate().find(
-				"from Customer cus where cus.userid=?",new Object[] { userid });
-		
-		CustomerForm customer = BeanUtils
-				.instantiate(CustomerForm.class);
-		if (detail.size() == 1) {
-			BeanUtils.copyProperties(detail.get(0), customer);
-		}
-		return customer;
-	}
-	
-	@Override
-	public byte[] findPhoto(int id){
-		List<Customer> customerList = (List<Customer>)getHibernateTemplate().find(
-				"from Customer cus where cus.id=?",new Object[] { id }) ;
-		if(customerList!=null&&customerList.size()==1){
-			return customerList.get(0).getImage();
-		}
-		return null;
 	}
 }

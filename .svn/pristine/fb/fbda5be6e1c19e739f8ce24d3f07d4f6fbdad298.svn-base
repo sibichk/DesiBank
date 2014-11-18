@@ -21,12 +21,6 @@
    $(document).ready(
 	//anonymous method  
 	 function() {
-		
-		 $("input,select").keyup(function(event){
-			    if(event.keyCode == 13){
-			        $("#sendData").click();
-			    }
-			});
 		//click event on button
 			$("#sendData").click(
 					function() {

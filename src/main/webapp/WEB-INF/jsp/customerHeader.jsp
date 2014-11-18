@@ -1,11 +1,8 @@
 <div id="header">
 <img
-	src="<%=request.getContextPath() %>/images/customerHead.jpg" width="768"
+	src="<%=request.getContextPath() %>/images/customerHead.jpg" width="100%"
 	height="200"></img>
-	<br><marquee   align="center"  behavior="alternate"
-			style="COLOR: #FF5050; font-family:Verdana; font-weight:bold"  scrollDelay=100  width=700
-			bgColor=#FFFFFF height=16>Welcome To Online
-		Desi@Bank </marquee></font> 
+	<br>Welcome To Online Desi@Bank </font> 
 	</div>
 	
 	<div id="menu">

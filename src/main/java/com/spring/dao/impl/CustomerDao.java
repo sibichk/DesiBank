@@ -2,6 +2,7 @@ package com.spring.dao.impl;
 
 import java.util.List;
 
+import com.spring.dao.entity.Customer;
 import com.spring.dao.entity.CustomerAccountInfo;
 import com.spring.dao.entity.CustomerTransactionHistory;
 import com.spring.dao.entity.PayeeInfo;
@@ -26,6 +27,8 @@ public interface CustomerDao {
 	public List<PayeeInfo> getPayeeList(String userid);
 	public String persistCustomerTransaction(CustomerTransactionHistory transaction);
 	public List<SecurityQuestions> securityQns();
-	List<SecurityQuestions> securityQns2();
+	public List<SecurityQuestions> securityQns2();
+	public CustomerForm getCustomerDetail(String userid);
+	public byte[] findPhoto(int id);
 }
 

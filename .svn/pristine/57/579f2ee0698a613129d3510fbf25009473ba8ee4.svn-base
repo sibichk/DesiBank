@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.dao.entity.Customer;
 import com.spring.dao.entity.CustomerAccountInfo;
 import com.spring.dao.entity.CustomerTransactionHistory;
 import com.spring.dao.entity.PayeeInfo;
@@ -103,19 +102,4 @@ public class CustomerServiceImpl implements CustomerService {
 		List<SecurityQuestions> sqList = (List<SecurityQuestions>)customerDao.securityQns2();
 		return sqList;
 	}
-	
-	@Override
-	public CustomerForm getUserDetail(String userid){
-		CustomerForm detail = (CustomerForm)customerDao.getCustomerDetail(userid);
-		return detail;
-	}
-
-	@Override
-	public byte[] findPhotoById(int id) {
-		// TODO Auto-generated method stub
-		byte[] photo = customerDao.findPhoto(id);
-		return photo;
-	}
-	
-	
 }
