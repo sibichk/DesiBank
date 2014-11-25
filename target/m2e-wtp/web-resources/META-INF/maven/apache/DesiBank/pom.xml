@@ -17,11 +17,24 @@
 
 	<dependencies>
 	
+	<!-- Form Validation using Annotations -->  
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.1.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.1.0.Final</version>
+		</dependency>
+		
+	
 	<!-- Log4j -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.9</version>
+			<version>1.2.12</version>
 		</dependency>
 
 		<!-- Adding dependency for JAX-WS 2.x Sun Implementation to develop web 

@@ -1,0 +1,159 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form"%>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Corporate by Free CSS Templates</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="<%=request.getContextPath() %>/css/desibank.css"
+	rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath() %>/css/style.css"
+	rel="stylesheet" type="text/css" />
+	<style>
+.error {
+	color: #ff0000;
+	font-style: italic;
+	font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+<jsp:include page="customerHeader.jsp" />
+
+
+<div id="content">
+
+<div id="right" style="width: 100%; height: 433">&nbsp;
+<b> Funds Transfer- Other DesiBank Account across India</b> 
+<hr />
+<spring:form method="POST" commandName="addpayee" action="confirmPayee.htm">
+	 <table border="1" align="center">
+	    <tr>
+	    <td>
+		Payee Account Number:
+		</td>
+		<td>
+		<spring:input path="payeeAccountNo" size="12"/>
+		</td>
+		<td>
+        <spring:errors path="payeeAccountNo" cssClass="error"/>
+        </td>
+        </tr>
+        <tr>
+        
+        <td>
+        Payee name:
+        </td>
+        <td>
+        <spring:input path="payeeName" size="12"/>
+        </td>
+        <td>
+        <spring:errors path="payeeName" cssClass="error"/>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        Payee Nick Name:
+        </td>
+        <td>
+        <spring:input path="payeeNickName"/>
+        </td>
+        <td>
+        <spring:errors path="payeeNickName" cssClass="error"/>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        Payee Registration alert to be sent to email
+        </td>
+        <td>
+        <spring:input path="email"/>
+        </td>
+        <td>
+        <spring:errors path="email" cssClass="error"/>
+        </td>
+        </tr>
+        <tr>
+        <td colspan="3">
+        <input type="submit" value="Add payee"/>
+        </td>
+        </tr>
+     </table>
+    </spring:form>    
+
+	
+<b> Add Payee - Enter Details</b>
+
+<p align="center"><font size="3" color="red"><b>
+<%=request.getAttribute("errorMsg")!=null?request.getAttribute("errorMsg"):""%>
+
+
+</b></font>
+
+
+</p>
+
+<!--  form method="post" action="confirmDetails.htm" --> 
+<%-- <form method="post" action="confirmPayee.htm">
+	<table border="0" align="center">
+
+      <tr>	
+		<td align="left"> Payee Account Number </td>
+		<td align="left"> <input type="text" name="payeeAccountNo" value=""/> </td>
+	  </tr>
+      <tr>	
+		<td align="left"> Re enter Account Number </td>
+		<td align="left"> <input type="text" name="accountNumber2" value=""/> </td>
+	  </tr>
+	   <tr>	
+		<td align="left"> Payee Name </td>
+		<td align="left"> <input type="text" name="payeeName" value=""/> </td>
+	  </tr>
+	   <tr>	
+		<td align="left"> Payee Nick Name </td>
+		<td align="left"> <input type="text" name="payeeNickName" value=""/> </td>
+	  </tr>
+	   <tr>	
+		<td align="left"> Payee Registration alert to be sent to email </td>
+		<td align="left"> <input type="text" name="email" value="${email}"/> </td>
+	  </tr>
+	  
+	  <tr>
+	   <td>
+	   <br />
+	   <br />
+	   
+	   <input type="submit" value="Next"/>
+	   <input type="button" value="Back"/>
+	   </td>
+	  </tr>
+	</table>
+</form> --%>
+</div>
+</div>
+<div>
+	 
+</div>
+
+
+
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+
+
+<div id="footer">
+<p>Copyright Â© 2006 Sitename.com. Designed by <a
+	href="http://www.freecsstemplates.org" class="link1">Free CSS
+Templates</a> | Downloaded from <a href="http://www.cssbank.com/"><strong>Free
+CSS Resource Bank</strong></a></p>
+</div>
+</body>
+</html>

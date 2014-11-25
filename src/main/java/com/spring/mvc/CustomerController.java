@@ -4,18 +4,21 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.MailSendException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,20 +29,25 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
 import com.desi.bank.exception.DesiBankException;
+import com.spring.dao.entity.Customer;
 import com.spring.dao.entity.CustomerAccountInfo;
 import com.spring.dao.entity.CustomerTransactionHistory;
 import com.spring.dao.entity.PayeeInfo;
 import com.spring.dao.entity.SecurityQuestions;
-import com.spring.dao.impl.CustomerDaoImpl;
+import com.spring.model.AddPayee;
 import com.spring.model.CustomerForm;
 import com.spring.model.MiniStatementVO;
 import com.spring.model.UserSessionVO;
 import com.spring.service.impl.CustomerService;
 import com.spring.service.impl.MailService;
-import com.spring.util.AdminUserListener;
 import com.spring.util.Encrypter;
 
+
+//scheduler
+
+
 @Controller
+
 public class CustomerController {
 	
 	
@@ -97,6 +105,7 @@ public class CustomerController {
 	        sb.append("\n\n User id is " + customer.getUserid());
 	        sb.append("\n\n Password is " + customer.getPassword());
 	     Encrypter encrypter=new Encrypter();
+	     
 	     //Password is encrypted before persisting in database
 	     customer.setPassword(encrypter.encrypt(customer.getPassword()));
 	     try{
@@ -157,12 +166,14 @@ public class CustomerController {
 	
 	
 	@RequestMapping(value = "editCustomer.htm", method = RequestMethod.POST)
-	public String updateCustomer(@ModelAttribute("customer") CustomerForm customer, Model model) {
-		  System.out.println(customer);
+	public String updateCustomer(@ModelAttribute("customer") CustomerForm customer, Model model,  HttpSession session) {
 		  customerService.updateCustomer(customer);
-	     List<CustomerForm> customerForms=customerService.findCustomers();
-		 model.addAttribute("customerForms",customerForms);
-		return "customers";
+		  UserSessionVO userSessionVO= (UserSessionVO) session.getAttribute("userSessionVO");
+		  String loginid=userSessionVO.getLoginid();
+		  CustomerForm customerdetail= (CustomerForm) customerService.getUserDetail(loginid);
+		   model.addAttribute("detail",customerdetail);
+		   return "customer";
+		   
 	}
 	
 	@RequestMapping(value = "/customer/showCustomerAccounts.htm", method = RequestMethod.GET)
@@ -199,36 +210,51 @@ public class CustomerController {
 	}
 	
 	
-	@RequestMapping(value = "customer/addPayee.htm", method = RequestMethod.GET)
-	public String addPayee() {
-		
+	@RequestMapping(value = "customer/addPayee.htm", method = RequestMethod.GET)  
+	public String addPayee(HttpSession session,Model model) {
+		UserSessionVO userSessionVO= (UserSessionVO) session.getAttribute("userSessionVO");
+		String userid=userSessionVO.getLoginid();
+		List<Customer> email = customerService.retrieveEmail(userid);
+		model.addAttribute("email",email.get(0).getEmail());
+		model.addAttribute("addpayee", new AddPayee());
 		return "addPayee";
 	}
-
+	
 	@RequestMapping(value = "customer/confirmPayee.htm", method = RequestMethod.POST)
-	public String confirmPayee(HttpServletRequest request, HttpSession session, Model model ) {
-		
-		PayeeInfo payee = new PayeeInfo();
-		payee.setCustomerId(((UserSessionVO)session.getAttribute("userSessionVO")).getLoginid());
-		payee.setPayeeAccountNo(request.getParameter("payeeAccountNo"));
-		payee.setPayeeName(request.getParameter("payeeName"));
-		payee.setPayeeNickName(request.getParameter("payeeNickName"));
-		payee.setMobile(request.getParameter("mobile"));
-		model.addAttribute("addPayeeInfo", payee);
-		session.setAttribute("payee", payee);
-		 
-		return "confirmPayee";
+	public String confirmPayee(@Valid @ModelAttribute("addpayee") AddPayee addpayee,BindingResult result,Model model,HttpSession session ) { 
+			
+			if (result.hasErrors()) {
+				//model.addAttribute("addpayee", addpayee);
+				return "addPayee";	
+			}	
+			PayeeInfo payee = new PayeeInfo();
+			payee.setCustomerId(((UserSessionVO)session.getAttribute("userSessionVO")).getLoginid());
+			
+			payee.setPayeeAccountNo(addpayee.getPayeeAccountNo());
+			payee.setPayeeName(addpayee.getPayeeName());
+			payee.setPayeeNickName(addpayee.getPayeeNickName());
+			int random = (int) (Math.random()*1000);
+			mailServiceImpl.sendMail("DesiBank", addpayee.getEmail(),"Add payee submission number", "Confirmation code:"+random);
+			model.addAttribute("addPayeeInfo", payee);
+			model.addAttribute("code",random);
+			session.setAttribute("payee", payee);
+			return "confirmPayee";
+			//return "addPayee";
 	}
 	
 	
 	@RequestMapping(value = "customer/finishConfirm.htm", method = RequestMethod.POST)
-	public String finishConfirmPayee(HttpSession session ) {
+	public String finishConfirmPayee(HttpSession session, Model model) {
 		
-		//System.out.println(((UserSessionVO)session.getAttribute("userSessionVO")).getLoginid());
-		System.out.println(((PayeeInfo)session.getAttribute("payee")).toString());
+		//((UserSessionVO)session.getAttribute("userSessionVO")).getLoginid();
+		//System.out.println(((PayeeInfo)session.getAttribute("payee")).toString());
 		PayeeInfo payee = (PayeeInfo) session.getAttribute("payee");
 		customerService.addPayee(payee);
-		
+		UserSessionVO userSessionVO= (UserSessionVO) session.getAttribute("userSessionVO");
+		String loginid=userSessionVO.getLoginid();
+		CustomerForm customerdetail= (CustomerForm) customerService.getUserDetail(loginid);
+		model.addAttribute("detail",customerdetail);
+		model.addAttribute("message","Payee added!");
 		return "customer";
 	}
 	
@@ -254,8 +280,28 @@ public class CustomerController {
 		return "transactionMoney";
 	}
 	
+	/*
+	public void doSchedule() {
+
+         System.out.println("@Scheduled(cron=\"*60 * * * * ?\")");
+
+         System.out.println("@Scheduled(cron=\"*60 * * * * ?\")");
+
+         System.out.println("Ahahahahha welcome the spring scheduler");
+
+         System.out.println("@Scheduled(cron=\"*60 * * * * ?\")");
+
+         System.out.println("@Scheduled(cron=\"*60 * * * * ?\")");
+
+    }
+	*/
+	//@Scheduled(cron="*/60 * * * * ?")
 	@RequestMapping(value="customer/transactionMoney.htm", method = RequestMethod.POST)
-	public String transferMoney(HttpSession session, HttpServletRequest request ) {
+	public String transferMoney(HttpSession session, HttpServletRequest request,Model model ) {
+		//TaskExecutor te = new TaskExecutor();
+		//SimpleAsyncTaskExecutor ste = new SimpleAsyncTaskExecutor();
+		//SessionManagementFilter smf = new Session
+		//System.out.println("sup?");
 		
 		CustomerTransactionHistory transaction = new CustomerTransactionHistory();
 		transaction.setFromAccountNumber(request.getParameter("fromAccountNumber"));
@@ -265,6 +311,12 @@ public class CustomerController {
 		transaction.setLoginId(((UserSessionVO)session.getAttribute("userSessionVO")).getLoginid());
 		transaction.setDate(new Date());
 		customerService.persistCustomerTransaction(transaction);
+		
+		UserSessionVO userSessionVO= (UserSessionVO) session.getAttribute("userSessionVO");
+		String loginid=userSessionVO.getLoginid();
+		CustomerForm customerdetail= (CustomerForm) customerService.getUserDetail(loginid);
+		model.addAttribute("detail",customerdetail);
+		   
 		return "customer";
 	}
 	

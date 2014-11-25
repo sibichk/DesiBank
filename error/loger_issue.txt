@@ -1,0 +1,17 @@
+    Exception in thread "main" java.lang.NoSuchFieldError: TRACE  
+     at org.jboss.logging.Log4jLoggerPlugin.isTraceEnabled(Log4jLoggerPlugin.java:85)  
+     at org.jboss.logging.Logger.isTraceEnabled(Logger.java:122)  
+     at org.jnp.interfaces.NamingContext.lookup(NamingContext.java:622)  
+     at org.jnp.interfaces.NamingContext.lookup(NamingContext.java:589)  
+     at javax.naming.InitialContext.lookup(InitialContext.java:351)  
+     at com.cognizant.util.ServiceHelper.initQueueService(ServiceHelper.java:153)  
+     at com.cognizant.main.StartUp.<init>(StartUp.java:28)  
+     at com.cognizant.main.StartUp.main(StartUp.java:46)  
+     
+     //User jar for  log4j version 1.2.12 or more as shown below
+     <!-- Log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.12</version>
+		</dependency>

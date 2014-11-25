@@ -1,0 +1,6 @@
+Nov 24, 2014 10:27:01 AM org.apache.catalina.core.StandardWrapperValve invoke
+SEVERE: Servlet.service() for servlet amog threw exception
+java.lang.NoSuchMethodError: javax.el.ExpressionFactory.newInstance()Ljavax/el/ExpressionFactory;
+	at org.hibernate.validator.internal.engine.messageinterpolation.InterpolationTerm.<clinit>(InterpolationTerm.java:59)
+	at org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator.interpolateExpression(ResourceBundleMessageInterpolator.java:341)
+	at org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator.interpolateMessage(ResourceBundleMessageInterpolator.java:279)

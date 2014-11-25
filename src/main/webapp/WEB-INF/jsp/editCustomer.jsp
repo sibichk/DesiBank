@@ -24,7 +24,6 @@
 <div id="right" style="width: 100%; height: 433">&nbsp;
 <hr />
 
-
 <h3 align="center" ><font color="#FFFF00" face="Arial Black">Edit Details</font></h3>
 	<p align="center" ><font color="white" face="Arial Black">
 	
@@ -56,7 +55,7 @@
 		<tr>
 			<td><b class="text1">Address:</b></td>
 			<td>
-			<textarea rows="2" cols="30" name="address"> <c:out value="${customerForms.address}" /> </textarea>
+			<textarea rows="2" cols="30" name="address"><c:out value="${customerForms.address}" /></textarea>
 			</td>
 		</tr>
 		
@@ -142,7 +141,14 @@
 			</c:if> 
 			
 			</td>
+			<tr>
+			<td><b class="text1">Photo:</b></td>
+			<td>
+			  <input type="file" name="file" value="${customerForms.photoName}"/>
 			</td>
+			
+		</tr>
+			
 		</tr>
 		<tr>
 			<td colspan="2" align="right"><input type="submit"
