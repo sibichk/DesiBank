@@ -1,12 +1,22 @@
 package com.spring.mvc;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+
+
+
+
+
 
 
 import org.apache.commons.logging.Log;
@@ -16,6 +26,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.MailSendException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -43,11 +54,10 @@ import com.spring.service.impl.MailService;
 import com.spring.util.Encrypter;
 
 
-//scheduler
 
 
+@Service
 @Controller
-
 public class CustomerController {
 	
 	
@@ -64,7 +74,6 @@ public class CustomerController {
 	@Qualifier("customerServiceImpl")
 	public CustomerService customerService;
 	
-
 	
 	@RequestMapping(value = "showCustomerRegistration.htm", method = RequestMethod.GET)
 	public String register(Model model, HttpSession session,HttpServletRequest request) {
@@ -224,7 +233,6 @@ public class CustomerController {
 	public String confirmPayee(@Valid @ModelAttribute("addpayee") AddPayee addpayee,BindingResult result,Model model,HttpSession session ) { 
 			
 			if (result.hasErrors()) {
-				//model.addAttribute("addpayee", addpayee);
 				return "addPayee";	
 			}	
 			PayeeInfo payee = new PayeeInfo();
@@ -280,44 +288,43 @@ public class CustomerController {
 		return "transactionMoney";
 	}
 	
-	/*
-	public void doSchedule() {
-
-         System.out.println("@Scheduled(cron=\"*60 * * * * ?\")");
-
-         System.out.println("@Scheduled(cron=\"*60 * * * * ?\")");
-
-         System.out.println("Ahahahahha welcome the spring scheduler");
-
-         System.out.println("@Scheduled(cron=\"*60 * * * * ?\")");
-
-         System.out.println("@Scheduled(cron=\"*60 * * * * ?\")");
-
-    }
-	*/
-	//@Scheduled(cron="*/60 * * * * ?")
+	
+	
 	@RequestMapping(value="customer/transactionMoney.htm", method = RequestMethod.POST)
 	public String transferMoney(HttpSession session, HttpServletRequest request,Model model ) {
-		//TaskExecutor te = new TaskExecutor();
-		//SimpleAsyncTaskExecutor ste = new SimpleAsyncTaskExecutor();
-		//SessionManagementFilter smf = new Session
-		//System.out.println("sup?");
 		
-		CustomerTransactionHistory transaction = new CustomerTransactionHistory();
-		transaction.setFromAccountNumber(request.getParameter("fromAccountNumber"));
-		transaction.setToAccountNumber(request.getParameter("selectedPayee"));
-		transaction.setAmount(Integer.parseInt(request.getParameter("transactionAmount")));
-		transaction.setDescription(request.getParameter("transactionRemarks"));
-		transaction.setLoginId(((UserSessionVO)session.getAttribute("userSessionVO")).getLoginid());
-		transaction.setDate(new Date());
-		customerService.persistCustomerTransaction(transaction);
+			CustomerTransactionHistory transaction = new CustomerTransactionHistory();
+			transaction.setFromAccountNumber(request.getParameter("fromAccountNumber"));
+			transaction.setToAccountNumber(request.getParameter("selectedPayee"));
+			transaction.setAmount(Integer.parseInt(request.getParameter("transactionAmount")));
+			transaction.setDescription(request.getParameter("transactionRemarks"));
+			//transaction.setDate(request.getParameter("date")); 
+			Date date= new Date();
+			try {
+				date = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(request.getParameter("date"));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(request.getParameter("optionType").equals("PayNow")){
+				transaction.setTransactionMode("transferred");
+			}
+			else{
+				//System.out.println(date);
+				transaction.setTransactionMode("scheduled");
+				transaction.setDate(date);
+			}
+			transaction.setLoginId(((UserSessionVO)session.getAttribute("userSessionVO")).getLoginid());
+			transaction.setDate(date);
+			customerService.persistCustomerTransaction(transaction);
+			
+			UserSessionVO userSessionVO= (UserSessionVO) session.getAttribute("userSessionVO");
+			String loginid=userSessionVO.getLoginid();
+			CustomerForm customerdetail= (CustomerForm) customerService.getUserDetail(loginid);
+			model.addAttribute("detail",customerdetail);
+			return "customer";
 		
-		UserSessionVO userSessionVO= (UserSessionVO) session.getAttribute("userSessionVO");
-		String loginid=userSessionVO.getLoginid();
-		CustomerForm customerdetail= (CustomerForm) customerService.getUserDetail(loginid);
-		model.addAttribute("detail",customerdetail);
-		   
-		return "customer";
+		
 	}
 	
 	
@@ -327,6 +334,7 @@ public class CustomerController {
 		List<PayeeInfo> payeeList = customerService.getPayeeList(((UserSessionVO)session.getAttribute("userSessionVO")).getLoginid());
 		request.setAttribute("payeeWebForm", payeeList);
 		return "registeredPayee";
+		//Pageable p;
 	}
 	
 	@RequestMapping(value="loan/loan.htm", method = RequestMethod.GET)

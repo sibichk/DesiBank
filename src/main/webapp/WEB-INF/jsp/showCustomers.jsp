@@ -28,7 +28,7 @@
 <h3 align="center" ><font color="#FFFF00" face="Arial Black">Customers Data</font></h3>
 	<p align="center" ><font color="white" face="Arial Black">
 	
-  <form id="ApproveCustomers" action="approvedCustomers.htm" method="post">
+  <form id="ApproveCustomers" action="approvedCustomers.htm" method="post"><a href="${pageContext.request.contextPath}/admin/excelExport.htm"">Export as Excel</a>
   <table border="1" align="center">
 			<tr>
 	    		<td><b class="text1">User ID:</b></td>

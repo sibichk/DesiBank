@@ -1,5 +1,6 @@
 package com.spring.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,6 +141,12 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<Customer> retrieveEmail(String userid) {
 		List<Customer> email= customerDao.retrieveEmail(userid);
 		return email;
+		
+	}
+
+	@Override
+	public List<CustomerTransactionHistory> scheduledTransfer() {
+		return customerDao.scheduledTransfer();
 		
 	}
 	

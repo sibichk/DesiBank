@@ -17,7 +17,7 @@
 
 	<dependencies>
 	
-	<!-- Form Validation using Annotations -->  
+	<!-- Server side Form Validation using Annotations -->  
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
@@ -28,8 +28,17 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.1.0.Final</version>
 		</dependency>
-		
-	
+		<!-- Apache POI - export/import to excel/word file -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>3.9</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>3.9</version>
+		</dependency>
 	<!-- Log4j -->
 		<dependency>
 			<groupId>log4j</groupId>

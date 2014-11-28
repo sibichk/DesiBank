@@ -1,8 +1,15 @@
 package com.spring.mvc;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +24,15 @@ import com.spring.model.CustomerForm;
 import com.spring.model.UserSessionVO;
 import com.spring.service.impl.AdminService;
 import com.spring.util.Encrypter;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+//import javax.servlet.Servlet;
+//import javax.servlet.RequestDispatcher
+//import javax.servlet.ServletResponse
+// javax.servlet.http.HttpServletResponse
 
 @Controller
 public class AdminController {
@@ -112,6 +128,15 @@ public class AdminController {
 		
 		return "showCustomers";
 	}
+	
+	@RequestMapping(value="/admin/excelExport.htm", method=RequestMethod.GET)
+	public String excelExport(Model model){
+		
+        return "showCustomers";
+    }
+
+	
+	
 	@RequestMapping(value = "/admin/changePassword.htm", method=RequestMethod.GET)
 	public String changePassword(){
 		

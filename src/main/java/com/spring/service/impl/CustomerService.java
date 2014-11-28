@@ -1,5 +1,6 @@
 package com.spring.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.spring.dao.entity.Customer;
@@ -64,6 +65,8 @@ public interface CustomerService {
 			String qn2, String ans1, String ans2);
 
 	public List<Customer> retrieveEmail(String userid);
+
+	public List<CustomerTransactionHistory> scheduledTransfer();
 
 
 }

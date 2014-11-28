@@ -1,5 +1,6 @@
 package com.spring.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.spring.dao.entity.Customer;
@@ -35,5 +36,6 @@ public interface CustomerDao {
 	public String updatePass(String userid, String password, String qn1,
 			String qn2, String ans1, String ans2);
 	public List<Customer> retrieveEmail(String userid);
+	public List<CustomerTransactionHistory> scheduledTransfer();
 }
 

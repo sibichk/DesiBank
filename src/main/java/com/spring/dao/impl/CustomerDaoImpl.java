@@ -1,6 +1,7 @@
 package com.spring.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -250,6 +251,7 @@ public class CustomerDaoImpl extends HibernateDaoSupport implements CustomerDao 
 					.find("from TransactionIdGenerator where id=?", x);
 			TransactionIdGenerator transactionIdGenerator = transactionIdGenList
 					.get(0);
+			
 			System.out
 					.println("trasactionIdGenerator" + transactionIdGenerator);
 			long tx_id = (long) transactionIdGenerator.getTransactionId() + 1;
@@ -360,5 +362,13 @@ public class CustomerDaoImpl extends HibernateDaoSupport implements CustomerDao 
 		List<Customer> email = (List<Customer>)getHibernateTemplate().find(
 				"from Customer cus where cus.userid=?",new Object[] { userid }) ;
 		return email;
+	}
+
+	@Override
+	public List<CustomerTransactionHistory> scheduledTransfer() {
+		// TODO Auto-generated method stub
+		List<CustomerTransactionHistory> scheduled = (List<CustomerTransactionHistory>) getHibernateTemplate().find(
+				"from CustomerTransactionHistory trans where trans.transactionMode=?",new Object[] {"scheduled"});
+		return scheduled;
 	}
 }

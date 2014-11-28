@@ -18,6 +18,16 @@
 	rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath() %>/css/style.css"
 	rel="stylesheet" type="text/css" />
+	
+	<script src="<%=request.getContextPath() %>/js/jquery-1.6.4.js"></script>
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script type="text/javascript">
+	$(document).ready(function(){
+		$( "#date" ).datepicker();
+	});
+</script>
 </head>
 
 <body>
@@ -90,7 +100,7 @@
 		    <strong>Pay Now  
 		      <br/>
 		    <input name="optionType" type="radio" id="optionType" style="text1" size="30" value="ScheduleForLater"/>
-		      Schedule for later
+		      Schedule for later <input type="text" id="date" name="date"/>
 		    </strong>
 		    </td>
              </tr>
