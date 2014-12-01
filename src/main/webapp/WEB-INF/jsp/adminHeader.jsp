@@ -13,7 +13,7 @@
 		<li><a href="${pageContext.request.contextPath}/admin/showUnapprovedCustomers.htm">Approve Customer</a></li>
 		<li><a href="${pageContext.request.contextPath}/admin/showUnLockedCustomers.htm">Unlock Customers</a></li>
 		<li><a href="${pageContext.request.contextPath}/admin/showCustomers.htm">Manage Customers</a></li>
-		<li><a href="${pageContext.request.contextPath}/admin/showLockedCustomers.htm">Lock Customer</a></li>
+		<li><a href="${pageContext.request.contextPath}/admin/showLockedCustomers.htm?value=1">Lock Customer</a></li>
 		<li><a href="${pageContext.request.contextPath}/admin/changePassword.htm">Change Password</a></li>
 		<li><a href="${pageContext.request.contextPath}/login.htm">Logout</a></li>
 	</ul>

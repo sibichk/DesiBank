@@ -16,15 +16,6 @@
 
 </script>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script type="text/javascript">
-$("#searchInput").keyup(function() {
-	var rows = $("#fbody").find("tr").hide();
-	var data = this.value.split(" ");
-	$.each(data, function(i, v) {
-		rows.filter(":contains('" + v + "')").show();
-	});
-});
-</script>
 
 </head>
 <body>
@@ -37,7 +28,7 @@ $("#searchInput").keyup(function() {
 
 <h3 align="center" ><font color="#FFFF00" face="Arial Black">Customers Data</font></h3>
 	<p align="center" ><font color="white" face="Arial Black">  
-	<input id="searchInput" placeholder="Type To Filter">
+
   <form id="ApproveCustomers" action="lockedCustomers.htm" method="post">
   <table border="1" align="center">
   			<tbody id="fbody">

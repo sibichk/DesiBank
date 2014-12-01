@@ -16,5 +16,7 @@ public interface AdminDao {
 	public List<CustomerForm> showCustomers();
 	public String changePassword(String userid,String password);
 	boolean addDefaultTransactionID(long id);
+	public List<CustomerForm> listPaginatedCustomers(int page);
+	public List<CustomerForm> searchUnapprovedCustomers(String keyword);
 	
 }

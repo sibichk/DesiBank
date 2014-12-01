@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,8 @@ import com.spring.model.CustomerForm;
 @Scope("singleton")
 @Transactional
 public class AdminDaoImpl extends HibernateDaoSupport implements AdminDao {
-
+	private static final int LIMITITEMSPERPAGE = 3;
+	
 	@Autowired
 	@Qualifier("sessionFactory")
 	public void setSpringManageSessionFactory(SessionFactory sessionFactory){
@@ -183,32 +186,63 @@ Login login = BeanUtils.instantiate(Login.class);
 		List<Login> unlockCust = getHibernateTemplate().find("from Login where locked = ?", "no");
 		System.out.println(unlockCust);
 		List<CustomerForm> customerForms=new ArrayList<CustomerForm>();
-		//CustomerForm customerForm=new CustomerForm();
 		for (Login ln : unlockCust) {
-			
-		
-		List<Customer> customers=getHibernateTemplate().find("from Customer c where c.userid= ? ",ln.getLoginid());
-		System.out.println(customers);
-		//customerForms=new ArrayList<CustomerForm>(customers.size());
-		//CustomerForm customerForm=new CustomerForm();
-		for(Customer customer:customers) {
-			CustomerForm customerForm=new CustomerForm();
-		BeanUtils.copyProperties(customer, customerForm);
-		System.out.println(customerForm);
-		customerForms.add(customerForm);
+			List<Customer> customers=getHibernateTemplate().find("from Customer c where c.userid= ? ",ln.getLoginid());
+			System.out.println(customers);
+			for(Customer customer:customers) {
+				CustomerForm customerForm=new CustomerForm();
+				BeanUtils.copyProperties(customer, customerForm);
+				System.out.println(customerForm);
+				customerForms.add(customerForm);
+			}
 		}
-		/*for(Customer customer:customers) {
-			CustomerForm customerForm=new CustomerForm();
-			BeanUtils.copyProperties(customer, customerForm);
-			customerForms.add(customerForm);
-		}*/
-		System.out.println(customerForms);
-		}
-		System.out.println(customerForms);
-		//customerForms.remove(0);
 		return customerForms;
 	}
+	/*
 
+	public List<Video> listVideosByKids(int page) {
+
+	    Query query = sessionFactory.getCurrentSession().createQuery("from Video where type=1");
+	    query.setMaxResults(LIMITITEMSPERPAGE);
+	    query.setFirstResult(page * LIMITITEMSPERPAGE);
+
+	    return (List<Video>) query.list();
+
+	}*/
+	@Override
+	public List<CustomerForm> listPaginatedCustomers(int page) { 
+		Login login = BeanUtils.instantiate(Login.class);
+		List<Login> unlockCust = getHibernateTemplate().find("from Login where locked = ?", "no");
+		
+		List<CustomerForm> customerFormList=new  ArrayList<CustomerForm>();
+		
+		List<Customer> customerDlist=new ArrayList<Customer>();
+		
+		for (Login ln : unlockCust) {
+		
+			Session lsf=super.getHibernateTemplate().getSessionFactory().openSession();
+			
+			Query query = lsf.createQuery("from Customer c where c.userid= ? ").setParameter(0,ln.getLoginid());
+			
+			//query.setMaxResults(LIMITITEMSPERPAGE);
+		    //query.setFirstResult(page * LIMITITEMSPERPAGE);
+		  /*List<Customer> customers=getHibernateTemplate().find("from Customer c where c.userid= ? ",ln.getLoginid());
+			for(Customer customer:customers) {
+				CustomerForm customerForm=new CustomerForm();
+			BeanUtils.copyProperties(customer, customerForm);
+			customerForms.add(customerForm);
+			}*/
+		    List<Customer> dcustomerList=query.list();
+		    customerDlist.add(dcustomerList.get(0));
+		    //System.out.println(dcustomerList);
+		}
+		
+		return customerFormList;
+	}
+	
+	
+	
+	
 	@Override
 	public String unlockCustomers(String[] id) {
 		Customer pcust=BeanUtils.instantiate(Customer.class);
@@ -261,6 +295,18 @@ Login login = BeanUtils.instantiate(Login.class);
 		login.setPassword(password);
 		getHibernateTemplate().update(login);
 		return "success";
+	}
+
+	@Override
+	public List<CustomerForm> searchUnapprovedCustomers(String keyword) {
+		List<Customer> customers=getHibernateTemplate().find("from Customer c where c.approved='0' AND c.name=?",keyword);
+		List<CustomerForm> customerForms=new ArrayList<CustomerForm>(customers.size());
+		for(Customer customer:customers) {
+			CustomerForm customerForm=new CustomerForm();
+			BeanUtils.copyProperties(customer, customerForm);
+			customerForms.add(customerForm);
+		}
+		return customerForms;
 	}
 
 }

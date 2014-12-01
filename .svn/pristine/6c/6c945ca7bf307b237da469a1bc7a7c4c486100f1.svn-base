@@ -27,10 +27,8 @@
 
 <h3 align="center" ><font color="#FFFF00" face="Arial Black">Customers Data</font></h3>
 	<p align="center" ><font color="white" face="Arial Black">
-	<form id="search" action="searchUnapprovedCustomer.htm" method="post">
-	Find By Name: <input type="text" name="keyword"/> <input type="submit" value="Search"/>
-	</form>
-  <form id="ApproveCustomers" action="approvedCustomers.htm" method="post">
+	
+  <form id="ApproveCustomers" action="approvedCustomers.htm" method="post"><a href="${pageContext.request.contextPath}/admin/excelExport.htm"">Export as Excel</a>
   <table border="1" align="center">
 			<tr>
 	    		<td><b class="text1">User ID:</b></td>
@@ -38,8 +36,7 @@
 	    		 <td><b class="text1">Email:</b></td>
 	    		 <td><b class="text1">Mobile:</b></td>
 	    		 <td><b class="text1">Address:</b></td>
-	    		 <td><b class="text1">Select / Unselect:</b></td>
-	    		 
+	    		  
 		     </tr>
 		     <c:forEach var="cust"  items="${customerForms}">
 		     <tr>
@@ -52,15 +49,11 @@
 	            <%--  <spring:checkbox path="${customerForms}" value="${cust.approved}" /> --%>
 	            
 	    		 <%-- <spring:checkbox path="approved" value="${cust.approved}" /> --%>
-	    		 <td><input type="checkbox" name="approveCustomer" value="${cust.id}" /></td>
 		     </tr>
 		     
 		     </c:forEach>
 		     
-		     <tr>
-			<td colspan="6" align="right"><input type="submit"
-				value="  Approve  " id="sendData"/></td>
-		</tr>
+		    
 </table>
 </form>
 

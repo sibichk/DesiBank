@@ -65,4 +65,16 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.addDefaultTransactionID(id);
 	}
 
+	@Override
+	public List<CustomerForm> listPaginatedCustomers(int page) {
+		// TODO Auto-generated method stub
+		return adminDao.listPaginatedCustomers(page);
+	}
+
+	@Override
+	public List<CustomerForm> searchUnapprovedCustomers(String keyword) {
+		// TODO Auto-generated method stub
+		return adminDao.searchUnapprovedCustomers(keyword);
+	}
+
 }

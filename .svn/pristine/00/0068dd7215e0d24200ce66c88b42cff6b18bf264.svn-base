@@ -16,7 +16,7 @@
 	<context:component-scan base-package="com.spring.model" />
 	
 	<mvc:annotation-driven />
-
+	
 	<bean id="viewResolver"
 					class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 					<property name="viewClass"
@@ -24,8 +24,6 @@
 					<property name="prefix" value="/WEB-INF/jsp/" />
 					<property name="suffix" value=".jsp" />
 	</bean>
-	
-	<!-- export to excel file -->
 	<bean id="viewResolver1" class="org.springframework.web.servlet.view.XmlViewResolver">
         <property name="order" value="1"/>
         <property name="location" value="/WEB-INF/views.xml"/>

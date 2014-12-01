@@ -50,15 +50,6 @@ public class AdminController {
 	}
 	
 	
-	@RequestMapping(value = "/admin/searchUnapprovedCustomer.htm", method=RequestMethod.POST)
-	public String searchUnapprovedCustomer(Model model, HttpServletRequest request){
-		String keyword= request.getParameter("keyword");
-		List<CustomerForm> customerForms = adminService.searchUnapprovedCustomers(keyword);
-		model.addAttribute("customerForms",customerForms);
-		
-		return "unapprovedCustomers";
-	}
-	
 	@RequestMapping(value="/admin/approvedCustomers.htm", method=RequestMethod.POST)
 	public String approveCustomers(HttpServletRequest request,Model model){
 		
@@ -77,9 +68,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/admin/showLockedCustomers.htm", method=RequestMethod.GET)
-	public String showLockedCustomers(@RequestParam(value = "page", defaultValue="1", required=false) int page,Model model){
-		System.out.println("page is"+page);
-		List<CustomerForm> customerForms = adminService.listPaginatedCustomers(page);
+	public String showLockedCustomers(Model model){
+		
+		List<CustomerForm> customerForms = adminService.listUnlockedCustomers();
 		model.addAttribute("customerForms",customerForms);
 		
 		return "lockedCustomer";
@@ -141,7 +132,50 @@ public class AdminController {
 	@RequestMapping(value="/admin/excelExport.htm", method=RequestMethod.GET)
 	public ModelAndView excelExport(Model model,  HSSFWorkbook workbook){
 		List<CustomerForm> customerForms = adminService.showCustomers();
-		  
+		
+		/*HSSFSheet sheet = workbook.createSheet("Java Books");
+        sheet.setDefaultColumnWidth(30);
+        CellStyle style = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setFontName("Arial");
+        style.setFillForegroundColor(HSSFColor.BLUE.index);
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        font.setColor(HSSFColor.WHITE.index);
+        style.setFont(font);
+         
+        // create header row
+        HSSFRow header = sheet.createRow(0);
+        
+        header.createCell(0).setCellValue("Book Title");
+        header.getCell(0).setCellStyle(style);
+         
+        header.createCell(1).setCellValue("Author");
+        header.getCell(1).setCellStyle(style);
+         
+        header.createCell(2).setCellValue("ISBN");
+        header.getCell(2).setCellStyle(style);
+         
+        header.createCell(3).setCellValue("Published Date");
+        header.getCell(3).setCellStyle(style);
+         
+        header.createCell(4).setCellValue("Price");
+        header.getCell(4).setCellStyle(style);
+         
+        // create data rows
+        int rowCount = 1;
+         
+        for (CustomerForm aBook : customerForms) {
+        	HSSFRow aRow = sheet.createRow(rowCount++);
+            aRow.createCell(0).setCellValue(aBook.getAccountNum());
+            aRow.createCell(1).setCellValue(aBook.getName());
+            aRow.createCell(2).setCellValue(aBook.getUserid());
+            aRow.createCell(3).setCellValue(aBook.getAge());
+            aRow.createCell(4).setCellValue(aBook.getFather());
+        }
+        */
+        
+        
         return new ModelAndView("excelView","customerForms",customerForms);
     }
 

@@ -15,4 +15,6 @@ public interface AdminService {
 	public List<CustomerForm> showCustomers();
 	public String changePasword(String userid,String password);
 	public boolean addDefaultTransactionID(long id);
+	public List<CustomerForm> listPaginatedCustomers(int page);
+	public List<CustomerForm> searchUnapprovedCustomers(String keyword);
 }
